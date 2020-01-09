@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <title> 浙江省主要城市宏观经济数据分析</title>>
+</head>
+
+<script type="text/javascript" src="../static/js/echarts.js"></script>
+<script type="text/javascript" src="../static/js/zhejiang.js"></script>
+<script type="text/javascript" src="../static/js/zhejiang.json"></script>
+
+<style>
+    .box {
+        width: 665px;
+        height: 500px;
+        margin: auto;
+        float: left;
+    }
+</style>
+<style>
+    .box2 {
+        width: 1330px;
+        height: 600px;
+        margin: auto;
+        float: left;
+    }
+</style>
+
+<body>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box2"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box2"></div>
+<div class="box2"></div>
+<div class="box2"></div>
+<div class="box2"></div>
+<div class="box"></div>
+<div class="box"></div>
+</body>
+
+<script type="text/javascript">
+
+    var myChart = echarts.init(document.getElementsByClassName('box')[1]);
+    var option = {
+        title: {
+            text: '2019年浙江省1-3季度各地级市GDP总额',
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}<br/>{c} (亿元)'
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        visualMap: {
+            min: 300,
+            max: 15000,
+            text: ['High', 'Low'],
+            left: 'right',
+            realtime: false,
+            calculable: true,
+            inRange: {
+                color: ['#e0f3f8', '#abd9e9', '#74add1', '#4575b4', '#313695']
+            }
+        },
+        series: [
+            {
+                name: '浙江',
+                type: 'map',
+                mapType: '浙江',
+                aspectScale: 0.85,  //地图长度比
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            color: '#333'
+                        }
+                    }
+                },
+                data: {{ gdp_map|safe }}
+            }
+        ]
+    };
+    myChart.setOption(option);
+
+</script>
+
+<script>
+    var myChart2 = echarts.init(document.getElementsByClassName('box')[0]);
+
+    option2 = {
+
+        title: {
+            text: '2018年浙江省各地级市GDP总额',
+            subtext: '浙江省统计局',
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            },
+            formatter: function (params) {
+                var tar = params[1];
+                return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value + '(亿元)';
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            splitLine: {show: false},
+            data: {{ type|safe }}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: '辅助',
+                type: 'bar',
+                stack: '总量',
+                itemStyle: {
+                    normal: {
+                        barBorderColor: 'rgba(0,0,0,0)',
+                        color: 'rgba(0,0,0,0)'
+                    },
+                    emphasis: {
+                        barBorderColor: 'rgba(0,0,0,0)',
+                        color: 'rgba(0,0,0,0)'
+                    }
+                },
+                data:{{ data2|safe }}//[0, 1700, 1400, 1200, 300, 0]
+            },
+            {
+                name: 'GDP',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'inside'
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#4575b4'
+                    }
+                },
+                data:{{ data|safe }}
+            }
+        ]
+    };
+    myChart2.setOption(option2)
+</script>
+
+<script>
+
+    setTimeout(function () {
+
+        var myChart3 = echarts.init(document.getElementsByClassName('box2')[0]);
+
+        option3 = {
+            legend: {
+                top: '8%'
+            },
+            title: {
+                text: '2009-2019年浙江省各地级市GDP及占比',
+                subtext: '浙江省统计局'
+            },
+            tooltip: {
+                trigger: 'axis',
+                showContent: false
+            },
+            dataset: {
+                source:{{ gdp|safe }}
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {type: 'category'},
+            yAxis: {gridIndex: 0},
+            grid: {top: '65%'},
+            series: [
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                {
+                    type: 'pie',
+                    id: 'pie',
+                    radius: '30%',
+                    center: ['50%', '35%'],
+                    label: {
+                        formatter: '{b}: {@2009} ({d}%)'
+                    },
+                    encode: {
+                        itemName: 'year',
+                        value: '2009',
+                        tooltip: '2009'
+                    }
+                }
+            ]
+        };
+
+        myChart3.on('updateAxisPointer', function (event) {
+            var xAxisInfo = event.axesInfo[0];
+            if (xAxisInfo) {
+                var dimension = xAxisInfo.value + 1;
+                myChart3.setOption({
+                    series: {
+                        id: 'pie',
+                        label: {
+                            formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                        },
+                        encode: {
+                            value: dimension,
+                            tooltip: dimension
+                        }
+                    }
+                });
+            }
+        });
+
+        myChart3.setOption(option3)
+
+    });
+</script>
+
+<script>
+    var myChart4 = echarts.init(document.getElementsByClassName('box')[2]);
+
+    var datalist = {{ coal_data|safe }}
+
+        option4 = {
+            title: {
+                text: '2006-2017年浙江省单位地区生产总值能耗',
+                subtext: '单位：吨标准煤/万元'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                top: '10%',
+                data: {{ city|safe }}
+            },
+            grid: {
+                left: '5%',
+                right: '5%',
+                top: '20%',
+                bottom: '2%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+            },
+            yAxis: {
+                type: 'value',
+                boudaryGap: false,
+                min: 0, // 设置y轴刻度的最小值
+                max: 2,  // 设置y轴刻度的最大值
+                splitNumber: 8// 设置y轴刻度间隔个数
+            },
+            series: [
+                {
+                    name: '杭州市',
+                    type: 'line',
+                    data: datalist[0]
+                }, {
+                    name: '宁波市',
+                    type: 'line',
+                    data: datalist[1]
+                }, {
+                    name: '温州市',
+                    type: 'line',
+                    data: datalist[2]
+                }, {
+                    name: '嘉兴市',
+                    type: 'line',
+                    data: datalist[3]
+                }, {
+                    name: '湖州市',
+                    type: 'line',
+                    data: datalist[4]
+                }, {
+                    name: '绍兴市',
+                    type: 'line',
+                    data: datalist[5]
+                }, {
+                    name: '金华市',
+                    type: 'line',
+                    data: datalist[6]
+                }, {
+                    name: '衢州市',
+                    type: 'line',
+                    data: datalist[7]
+                }, {
+                    name: '舟山市',
+                    type: 'line',
+                    data: datalist[8]
+                }, {
+                    name: '台州市',
+                    type: 'line',
+                    data: datalist[9]
+                }, {
+                    name: '丽水市',
+                    type: 'line',
+                    data: datalist[10]
+                }, {
+                    name: '浙江省',
+                    type: 'line',
+                    data: datalist[11],
+                    lineStyle: {
+                        normal: {
+                            width: 3,
+                            color: 'red',
+                            type: 'dotted'
+                        }
+                    }
+                }]
+        };
+    myChart4.setOption(option4)
+</script>
+
+<script>
+    var myChart5 = echarts.init(document.getElementsByClassName('box')[3]);
+    var datalist = {{ electric_data|safe }}
+        option5 = {
+            title: {
+                text: '2006-2017年浙江省单位地区生产总值电耗',
+                subtext: '单位：千瓦小时/万元'
+            }, tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                top: '10%',
+                data: {{ city|safe }}
+            },
+            grid: {
+                left: '5%',
+                right: '5%',
+                top: '20%',
+                bottom: '2%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+            },
+            yAxis: {
+                type: 'value',
+                boudaryGap: false,
+                min: 400, // 设置y轴刻度的最小值
+                max: 2000,  // 设置y轴刻度的最大值
+                //splitNumber: // 设置y轴刻度间隔个数
+            },
+            series: [
+                {
+                    name: '杭州市',
+                    type: 'line',
+                    data: datalist[0],
+                    lineStyle: {
+                        color: '#4575b4'
+                    }
+                },
+                {
+                    name: '宁波市',
+                    type: 'line',
+                    data: datalist[1]
+                },
+                {
+                    name: '温州市',
+                    type: 'line',
+                    data: datalist[2]
+                },
+                {
+                    name: '嘉兴市',
+                    type: 'line',
+                    data: datalist[3]
+                },
+                {
+                    name: '湖州市',
+                    type: 'line',
+                    data: datalist[4]
+                },
+                {
+                    name: '绍兴市',
+                    type: 'line',
+                    data: datalist[5]
+                },
+                {
+                    name: '金华市',
+                    type: 'line',
+                    data: datalist[6]
+                },
+                {
+                    name: '衢州市',
+                    type: 'line',
+                    data: datalist[7]
+                },
+                {
+                    name: '舟山市',
+                    type: 'line',
+                    data: datalist[8]
+                },
+                {
+                    name: '台州市',
+                    type: 'line',
+                    data: datalist[9]
+                },
+                {
+                    name: '丽水市',
+                    type: 'line',
+                    data: datalist[10]
+                },
+                {
+                    name: '浙江省',
+                    type: 'line',
+                    data: datalist[11],
+                    lineStyle: {
+                        normal: {
+                            width: 3,
+                            color: 'red',
+                            type: 'dotted'
+                        }
+                    }
+                }
+            ]
+        };
+
+    myChart5.setOption(option5)
+</script>
+
+<script>
+    var myChart6 = echarts.init(document.getElementsByClassName('box2')[1]);
+    var data = {{ y_data|safe}}
+        option = {
+            title: {
+                top: '3%',
+                text: '2009-2017年浙江省各地区能源(能耗、电耗)与GDP'
+            },
+            legend: {
+                top: '10%',
+                align: 'left',
+                data: ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+            },
+            grid: {
+                left: '8%',
+                right: '8%',
+                top: '16%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                name: '        能耗\n(吨标准煤/万元)',
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                }
+            },
+            yAxis: {
+                name: '电耗\n(千瓦小时/万元)',
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                scale: true
+            },
+
+            series: [{
+                name: '2009',
+                data: data[0],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                            offset: 0,
+                            color: '#feecec'
+                        }, {
+                            offset: 1,
+                            color: '#f1b5c1'
+                        }])
+
+                    }
+                }
+            }, {
+                name: '2010',
+                data: data[1],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                            offset: 0,
+                            color: '#febeb2'
+                        }, {
+                            offset: 1,
+                            color: '#ea6a67'
+                        }])
+                    }
+
+                }
+            }, {
+                name: '2011',
+                data: data[2],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                }, itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                            offset: 0,
+                            color: '#f7cacd'
+                        }, {
+                            offset: 1,
+                            color: '#e95e70'
+                        }])
+                    }
+                }
+            }, {
+                name: '2012',
+                data: data[3],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                }, itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                            offset: 0,
+                            color: '#febeb2'
+                        }, {
+                            offset: 1,
+                            color: '#c26a5c'
+                        }])
+
+                    }
+                }
+            }, {
+                name: '2013',
+                data: data[4],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                }, itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                            offset: 0,
+                            color: '#ea6a67'
+                        }, {
+                            offset: 1,
+                            color: '#c21d3b'
+                        }])
+                    }
+                }
+            }, {
+                name: '2014',
+                data: data[5],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                }, itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                            offset: 0,
+                            color: '#f0da77'
+                        }, {
+                            offset: 1,
+                            color: '#7e4d46'
+                        }])
+
+                    }
+
+                }
+            }, {
+                name: '2015',
+                data: data[6],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                }, itemStyle: {
+                    color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                        offset: 0,
+                        color: '#fdf4bb'
+                    }, {
+                        offset: 1,
+                        color: '#ad5525'
+                    }])
+                }
+            }, {
+                name: '2016',
+                data: data[7],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                }, itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                            offset: 0,
+                            color: 'rgb(253,201,127)'
+                        }, {
+                            offset: 1,
+                            color: 'rgb(235,105,47)'
+                        }])
+                    }
+
+                }
+            }, {
+                name: '2017',
+                data: data[8],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) / 5;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'right'
+                    }
+                }, itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.1, 1, [{
+                            offset: 0,
+                            color: '#fdf4bb'
+                        }, {
+                            offset: 1,
+                            color: '#ffc809'
+                        }])
+                    }
+
+                }
+            }]
+        };
+    myChart6.setOption(option)
+
+</script>
+<script>
+    var myChart7 = echarts.init(document.getElementsByClassName('box2')[2]);
+    years = {{ fixed_year|safe }};
+    fixed_city = {{ fixed_city|safe }};
+    temp_data = {{ fixed_invest|safe }};
+
+    data = temp_data.map(function (item) {
+        return [item[1], item[0], item[2] || '-'];
+    });
+
+    option7 = {
+        title: {
+            top: '3%',
+            text: '2000-2017年浙江省部分地区固定资产投资金额',
+            subtext: '单位：亿元'
+        },
+        tooltip: {
+            position: 'top',
+            formatter: function (params) {
+                return params.value[2] + '亿元';
+            }
+        },
+        animation: false,
+        grid: {
+            height: '70%',
+            top: '15%'
+        },
+        xAxis: {
+            type: 'category',
+            data: years,
+            splitArea: {
+                show: true
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: fixed_city,
+            splitArea: {
+                show: true
+            }
+        },
+        visualMap: {
+            min: 0,
+            max: 6000,
+            calculable: true,
+            bottom: '10%',
+            right: 'right',
+            orient: 'vertical',
+            align: 'left'
+        },
+        series: [{
+            name: '投资金额',
+            type: 'heatmap',
+            data: data,
+            label: {
+                show: true
+            },
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+    myChart7.setOption(option7)
+</script>
+
+<script>
+    var myChart8 = echarts.init(document.getElementsByClassName('box2')[3]);
+    years = {{ fixed_year|safe }};
+    fixed_city = {{ fixed_city|safe }};
+    temp_data = {{ house_invest|safe }};
+
+    data = temp_data.map(function (item) {
+        return [item[1], item[0], item[2] || '-'];
+    });
+
+    option8 = {
+        title: {
+            top: '3%',
+            text: '2000-2017年浙江省部分地区房地产投资金额',
+            subtext: '单位：亿元'
+        },
+        tooltip: {
+            position: 'top',
+            formatter: function (params) {
+                return params.value[2] + '亿元';
+            }
+        },
+        animation: false,
+        grid: {
+            height: '70%',
+            top: '15%'
+        },
+        xAxis: {
+            type: 'category',
+            data: years,
+            splitArea: {
+                show: true
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: fixed_city,
+            splitArea: {
+                show: true
+            }
+        },
+        visualMap: {
+            min: 0,
+            max: 3000,
+            calculable: true,
+            bottom: '10%',
+            right: 'right',
+            orient: 'vertical',
+            align: 'left'
+        },
+        series: [{
+            name: '投资金额',
+            type: 'heatmap',
+            data: data,
+            label: {
+                show: true
+            },
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+    myChart8.setOption(option8)
+</script>
+
+<script>
+    var myChart9 = echarts.init(document.getElementsByClassName('box')[4]);
+    var xAxisData = {{ xAxisData|safe }};
+    var customData = {{ customData_fixed|safe }};
+    var legendData = {{ legendData|safe }};
+    var dataList = {{dataList_fixed|safe }};
+    var encodeY = {{ encodeY|safe }};
+
+
+    function renderItem(params, api) {
+        var xValue = api.value(0);
+        var currentSeriesIndices = api.currentSeriesIndices();
+        var barLayout = api.barLayout({
+            barGap: '30%', barCategoryGap: '20%', count: currentSeriesIndices.length - 1
+        });
+
+        var points = [];
+        for (var i = 0; i < currentSeriesIndices.length; i++) {
+            var seriesIndex = currentSeriesIndices[i];
+            if (seriesIndex !== params.seriesIndex) {
+                var point = api.coord([xValue, api.value(seriesIndex)]);
+                point[0] += barLayout[i - 1].offsetCenter;
+                point[1] -= 20;
+                points.push(point);
+            }
+        }
+        var style = api.style({
+            stroke: api.visual('color'),
+            fill: null
+        });
+
+        return {
+            type: 'polyline',
+            shape: {
+                points: points
+            },
+            style: style
+        };
+    }
+
+    option = {
+        title: {
+            text: '2008-2017宁波市部分行政区域固定资产投资',
+            subtext: '宁波市统计局(单位:亿元)'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            top: '8%',
+            orientd: 'vertical',
+            right: 'right',
+            top: '5%',
+            data: legendData
+        },
+        xAxis: {
+            data: xAxisData
+        },
+        yAxis: {},
+        grid: {
+            left: '2%',
+            right: '15%',
+            top: '15%',
+            containLabel: true
+        },
+        series: [{
+            type: 'custom',
+            name: 'trend',
+            renderItem: renderItem,
+            itemStyle: {
+                borderWidth: 2
+            },
+            encode: {
+                x: 0,
+                y: encodeY
+            },
+            data: customData,
+            z: 100
+        }].concat(echarts.util.map(dataList, function (data, index) {
+            return {
+                type: 'bar',
+                animation: false,
+                name: legendData[index + 1],
+                itemStyle: {
+                    opacity: 0.5
+                },
+                data: data
+            };
+        }))
+    };
+    myChart9.setOption(option)
+</script>
+
+<script>
+    var myChart10 = echarts.init(document.getElementsByClassName('box')[5]);
+    var xAxisData = {{ xAxisData|safe }};//['category0', 'category1', 'category2', 'category3', 'category4', 'category5', 'category6'];
+    var customData = {{ customData_house|safe }};//[[0, 200, 300, 400, 600, 500, 100, 234], [1, 200, 300, 400, 600, 500, 100, 234], [2, 200, 300, 400, 600, 500, 100, 234], [3, 200, 300, 400, 600, 500, 100, 234], [4, 200, 300, 400, 600, 500, 100, 234], [5, 200, 300, 400, 600, 500, 100, 234], [6, 200, 300, 400, 600, 500, 100, 234]];
+    var legendData = {{ legendData|safe }};//['trend', '2011', '2012', '2013', '2014', '2015', '2016', '2017'];
+    var dataList = {{dataList_house|safe }};//[[200, 200, 200, 200, 200, 200, 200], [300, 300, 300, 300, 300, 300, 300], [400, 400, 400, 400, 400, 400, 400], [600, 600, 600, 600, 600, 600, 600], [500, 500, 500, 500, 500, 500, 500], [100, 100, 100, 100, 100, 100, 100], [234, 234, 234, 234, 234, 234, 234]];
+    var encodeY = {{ encodeY|safe }};//[1, 2, 3, 4, 5, 6, 7];
+
+
+    function renderItem(params, api) {
+        var xValue = api.value(0);
+        var currentSeriesIndices = api.currentSeriesIndices();
+        var barLayout = api.barLayout({
+            barGap: '30%', barCategoryGap: '20%', count: currentSeriesIndices.length - 1
+        });
+
+        var points = [];
+        for (var i = 0; i < currentSeriesIndices.length; i++) {
+            var seriesIndex = currentSeriesIndices[i];
+            if (seriesIndex !== params.seriesIndex) {
+                var point = api.coord([xValue, api.value(seriesIndex)]);
+                point[0] += barLayout[i - 1].offsetCenter;
+                point[1] -= 20;
+                points.push(point);
+            }
+        }
+        var style = api.style({
+            stroke: api.visual('color'),
+            fill: null
+        });
+
+        return {
+            type: 'polyline',
+            shape: {
+                points: points
+            },
+            style: style
+        };
+    }
+
+    option = {
+        title: {
+            text: '2008-2017宁波市部分行政区域房地产投资',
+            subtext: '宁波市统计局(单位:亿元)'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            top: '8%',
+            orientd: 'vertical',
+            right: 'right',
+            top: '5%',
+            data: legendData
+        },
+        xAxis: {
+            data: xAxisData
+        },
+        yAxis: {},
+        grid: {
+            left: '2%',
+            right: '15%',
+            top: '15%',
+            containLabel: true
+        },
+        series: [{
+            type: 'custom',
+            name: 'trend',
+            renderItem: renderItem,
+            itemStyle: {
+                borderWidth: 2
+            },
+            encode: {
+                x: 0,
+                y: encodeY
+            },
+            data: customData,
+            z: 100
+        }].concat(echarts.util.map(dataList, function (data, index) {
+            return {
+                type: 'bar',
+                animation: false,
+                name: legendData[index + 1],
+                itemStyle: {
+                    opacity: 0.5
+                },
+                data: data
+            };
+        }))
+    };
+    myChart10.setOption(option)
+</script>
+
+<script>
+    var myChart11 = echarts.init(document.getElementsByClassName('box2')[4]);
+    option = {
+        title: {
+            text: '2008-2017宁波市部分行政区GDP',
+            subtext: '宁波市统计局(单位:亿元)'
+        },
+        legend: {
+            top:'8%'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        dataset: {
+            source: {{ nb_gdp|safe }}
+        },
+        xAxis: [
+            {type: 'category', gridIndex: 0},
+            {type: 'category', gridIndex: 1}
+        ],
+        yAxis: [
+            {gridIndex: 0},
+            {gridIndex: 1}
+        ],
+        grid: [
+            {top:'13%',bottom: '50%'},
+            {top: '55%'}
+        ],
+        series: [
+            // These series are in the first grid.
+            {type: 'bar', seriesLayoutBy: 'row'},
+            {type: 'bar', seriesLayoutBy: 'row'},
+            {type: 'bar', seriesLayoutBy: 'row'},
+            {type: 'bar', seriesLayoutBy: 'row'},
+            {type: 'bar', seriesLayoutBy: 'row'},
+            {type: 'bar', seriesLayoutBy: 'row'},
+            // These series are in the second grid.
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+            {type: 'bar', xAxisIndex: 1, yAxisIndex: 1}
+        ]
+    };
+    myChart11.setOption(option)
+</script>
+</html>
